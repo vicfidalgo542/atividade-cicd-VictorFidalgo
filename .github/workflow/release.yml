@@ -1,0 +1,36 @@
+name: Deploy Vercel via Tag
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+
+      - name: Checkout do repositório
+        uses: actions/checkout@v5
+
+      - name: Mostrar versão
+        run: echo "Publicando versão ${GITHUB_REF_NAME}"
+
+      - name: Instalar Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Obter configurações da Vercel
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Gerar build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Publicar na Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
