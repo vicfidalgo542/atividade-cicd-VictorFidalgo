@@ -1,4 +1,4 @@
-const API_URL = "https://atividade-cicd-back-victorfidalgo.onrender.com/";
+const API_URL = "https://atividade-cicd-back-victorfidalgo.onrender.com";;
 
 async function carregarStatus() {
 
